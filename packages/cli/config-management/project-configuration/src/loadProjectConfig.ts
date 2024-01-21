@@ -6,7 +6,7 @@ import { PROJECT_CONFIG_FILENAME } from "./constants";
 import { ProjectConfigSchema } from "./schemas/ProjectConfigSchema";
 
 export interface ProjectConfig {
-    _absolutePath: AbsoluteFilePath;
+    _absolutePath: AbsoluteFilePath | null;
     rawConfig: ProjectConfigSchema;
     organization: string;
     version: string;
@@ -14,11 +14,25 @@ export interface ProjectConfig {
 
 export async function loadProjectConfig({
     directory,
-    context
+    context,
+    local
 }: {
     directory: AbsoluteFilePath;
     context: TaskContext;
+    local?: boolean | undefined;
 }): Promise<ProjectConfig> {
+    if (local === true) {
+        return {
+            _absolutePath: null,
+            rawConfig: {
+                organization: "",
+                version: ""
+            },
+            organization: "",
+            version: ""
+        };
+    }
+
     const pathToConfig = join(directory, RelativeFilePath.of(PROJECT_CONFIG_FILENAME));
 
     const projectConfigStr = await readFile(pathToConfig);

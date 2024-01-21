@@ -378,7 +378,8 @@ function addGenerateCommand(cli: Argv<GlobalCliOptions>, cliContext: CliContext)
                         cliContext,
                         {
                             commandLineApiWorkspace: undefined,
-                            defaultToAllApiWorkspaces: true
+                            defaultToAllApiWorkspaces: true,
+                            local: argv.local
                         },
                         true
                     ),
@@ -391,7 +392,8 @@ function addGenerateCommand(cli: Argv<GlobalCliOptions>, cliContext: CliContext)
                 await generateAPIWorkspaces({
                     project: await loadProjectAndRegisterWorkspacesWithContext(cliContext, {
                         commandLineApiWorkspace: argv.api,
-                        defaultToAllApiWorkspaces: false
+                        defaultToAllApiWorkspaces: false,
+                        local: argv.local
                     }),
                     cliContext,
                     version: argv.version,

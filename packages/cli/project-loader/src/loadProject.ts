@@ -18,6 +18,8 @@ export declare namespace loadProject {
          */
         defaultToAllApiWorkspaces: boolean;
         context: TaskContext;
+
+        local?: boolean | undefined;
     }
 }
 
@@ -26,9 +28,12 @@ export async function loadProject({
     cliVersion,
     commandLineApiWorkspace,
     defaultToAllApiWorkspaces,
-    context
+    context,
+    local
 }: loadProject.Args): Promise<Project> {
-    const fernDirectory = await getFernDirectory();
+    const fernDirectory = await getFernDirectory({
+        local
+    });
     if (fernDirectory == null) {
         return context.failAndThrow(`Directory "${FERN_DIRECTORY}" not found.`);
     }
@@ -43,7 +48,7 @@ export async function loadProject({
     });
 
     return {
-        config: await loadProjectConfig({ directory: fernDirectory, context }),
+        config: await loadProjectConfig({ directory: fernDirectory, context, local }),
         apiWorkspaces,
         docsWorkspaces: await loadDocsWorkspace({ fernDirectory, context })
     };

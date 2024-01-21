@@ -99,7 +99,7 @@ export async function upgrade({
         const newProjectConfig = produce(projectConfig.rawConfig, (draft) => {
             draft.version = fernCliUpgradeInfo.latestVersion;
         });
-        await writeFile(projectConfig._absolutePath, JSON.stringify(newProjectConfig, undefined, 2));
+        await writeFile(projectConfig._absolutePath || "", JSON.stringify(newProjectConfig, undefined, 2));
 
         cliContext.logger.info(
             `Upgrading from ${chalk.dim(cliContext.environment.packageVersion)} → ${chalk.green(
